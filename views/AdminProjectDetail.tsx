@@ -70,7 +70,7 @@ const AdminProjectDetail: React.FC<AdminProjectDetailProps> = ({ project, onGoBa
                 
                 {/* Client Brief */}
                 <div>
-                    <h3 className="text-2xl mb-4 cursor-blink">> cat /docs/client_brief.txt</h3>
+                    <h3 className="text-2xl mb-4 cursor-blink">&gt; cat /docs/client_brief.txt</h3>
                      <div className="text-base sm:text-lg whitespace-pre-wrap pl-4 border-l-2 border-[var(--color-border)]/50 bg-[var(--color-secondary-bg)] p-4 rounded">
                         <p className="text-[var(--color-muted)]">{project.clientBrief}</p>
                     </div>
@@ -78,7 +78,7 @@ const AdminProjectDetail: React.FC<AdminProjectDetailProps> = ({ project, onGoBa
 
                 {/* Project Files */}
                 <div>
-                    <h3 className="text-2xl mb-4 cursor-blink">> ls -l /assets</h3>
+                    <h3 className="text-2xl mb-4 cursor-blink">&gt; ls -l /assets</h3>
                     <div className="text-base sm:text-lg whitespace-pre-wrap pl-4 border-l-2 border-[var(--color-border)]/50 font-mono">
                         <p className="text-[var(--color-muted)]">Permissions  Size      Name</p>
                         <p className="text-[var(--color-muted)]">-----------  --------  ----</p>
