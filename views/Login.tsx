@@ -25,14 +25,17 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
             password: password,
         });
 
+        setLoading(false);
+
         if (error) {
-            setError(error.message);
-        } else if (data.user) {
+            setError('[AUTH_ERROR] Invalid login credentials');
+        } else if (data.user && data.session) {
             // Check if the logged-in user is the designated admin
             const isAdminLogin = data.user.email?.toLowerCase() === 'admin@studiox.com';
             onLogin(isAdminLogin);
+        } else {
+             setError('[AUTH_ERROR] Invalid login credentials');
         }
-        setLoading(false);
     };
 
     const handleGoBack = () => {
@@ -43,7 +46,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
     return (
         <div>
             <h2 className="text-3xl sm:text-4xl mb-8">
-                <Typewriter text="&gt; System Access Authentication" />
+                <Typewriter text="> System Access Authentication" />
             </h2>
             <p className="text-lg text-[var(--color-muted)] mb-8">Awaiting credentials...</p>
 
@@ -71,7 +74,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
                     />
                 </div>
 
-                {error && <p className="text-red-500 text-sm animate-pulse">[AUTH_ERROR] {error}</p>}
+                {error && <p className="text-red-500 text-sm animate-pulse">{error}</p>}
 
                 <div className="flex justify-between items-center pt-6">
                     <button type="button" onClick={handleGoBack} className="bg-[var(--color-secondary-btn-bg)] text-[var(--color-secondary-btn-text)] py-3 px-6 rounded transition duration-300 hover:bg-[var(--color-secondary-btn-hover)]">
