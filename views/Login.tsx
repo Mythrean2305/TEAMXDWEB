@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Typewriter from '../components/Typewriter';
 import { playClickSound } from '../utils/sounds';
+import { supabase } from '../supabaseClient'; // Import the Supabase client
 
 interface LoginProps {
     onLogin: (isAdmin: boolean) => void;
@@ -10,12 +11,28 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         playClickSound();
-        const isAdminLogin = email.toLowerCase() === 'admin@studiox.com';
-        onLogin(isAdminLogin);
+        setLoading(true);
+        setError(null);
+
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        if (error) {
+            setError(error.message);
+        } else if (data.user) {
+            // Check if the logged-in user is the designated admin
+            const isAdminLogin = data.user.email?.toLowerCase() === 'admin@studiox.com';
+            onLogin(isAdminLogin);
+        }
+        setLoading(false);
     };
 
     const handleGoBack = () => {
@@ -53,12 +70,15 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
                         required
                     />
                 </div>
+
+                {error && <p className="text-red-500 text-sm animate-pulse">[AUTH_ERROR] {error}</p>}
+
                 <div className="flex justify-between items-center pt-6">
                     <button type="button" onClick={handleGoBack} className="bg-[var(--color-secondary-btn-bg)] text-[var(--color-secondary-btn-text)] py-3 px-6 rounded transition duration-300 hover:bg-[var(--color-secondary-btn-hover)]">
                         Go Back
                     </button>
-                    <button type="submit" disabled={!email || !password} className="bg-[var(--color-text)] text-[var(--color-bg)] font-bold py-3 px-6 rounded transition duration-300 hover:brightness-90 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed">
-                        [AUTHENTICATE]
+                    <button type="submit" disabled={!email || !password || loading} className="bg-[var(--color-text)] text-[var(--color-bg)] font-bold py-3 px-6 rounded transition duration-300 hover:brightness-90 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed">
+                        {loading ? 'Authenticating...' : '[AUTHENTICATE]'}
                     </button>
                 </div>
             </form>
