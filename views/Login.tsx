@@ -26,7 +26,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
     return (
         <div>
             <h2 className="text-3xl sm:text-4xl mb-8">
-                <Typewriter text="> System Access Authentication" />
+                <Typewriter text="&gt; System Access Authentication" />
             </h2>
             <p className="text-lg text-[var(--color-muted)] mb-8">Awaiting credentials...</p>
 

@@ -22,7 +22,7 @@ const Team: React.FC<TeamProps> = ({ onGoBack }) => {
     return (
         <div>
             <h2 className="text-3xl sm:text-4xl mb-8">
-                <Typewriter text="> whoami --all" />
+                <Typewriter text="&gt; whoami --all" />
             </h2>
 
             <div className="space-y-8">

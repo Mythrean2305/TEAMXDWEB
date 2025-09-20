@@ -145,7 +145,7 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
   return (
     <div>
       <h2 className="text-3xl sm:text-4xl mb-8">
-        <Typewriter text="> Initiate Project Brief" />
+        <Typewriter text="&gt; Initiate Project Brief" />
       </h2>
       
       <form onSubmit={handleSubmit} className="space-y-8">

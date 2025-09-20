@@ -72,7 +72,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onGoBack }) => {
     return (
         <div>
             <h2 className="text-3xl sm:text-4xl mb-8">
-                <Typewriter text="> ls /portfolio" />
+                <Typewriter text="&gt; ls /portfolio" />
             </h2>
             <div className="text-base sm:text-lg whitespace-pre-wrap">
                 <p className="text-[var(--color-muted)]">Permissions  Size   Date      Name</p>

@@ -40,7 +40,7 @@ const AdminProjectDetail: React.FC<AdminProjectDetailProps> = ({ project, onGoBa
         <div>
             <div className="flex justify-between items-start mb-6">
                 <h2 className="text-2xl sm:text-3xl max-w-3xl">
-                    <Typewriter text={`> Viewing Project: ${project.name}`} />
+                    <Typewriter text={`&gt; Viewing Project: ${project.name}`} />
                 </h2>
                 <button onClick={handleGoBack} className="bg-[var(--color-secondary-btn-bg)] text-[var(--color-secondary-btn-text)] py-2 px-4 rounded transition duration-300 hover:bg-[var(--color-secondary-btn-hover)] text-sm flex-shrink-0">
                     &lt; Back to Panel

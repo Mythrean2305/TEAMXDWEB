@@ -30,7 +30,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         <div>
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl sm:text-4xl">
-                    <Typewriter text="> Welcome back, Client." />
+                    <Typewriter text="&gt; Welcome back, Client." />
                 </h2>
             </div>
 

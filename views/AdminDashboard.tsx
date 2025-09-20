@@ -41,14 +41,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ projects, onSelectProje
         <div>
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl sm:text-4xl">
-                    <Typewriter text="> Admin Control Panel" />
+                    <Typewriter text="&gt; Admin Control Panel" />
                 </h2>
             </div>
 
             <div className="space-y-12">
                 {/* System Stats */}
                 <div>
-                    <h3 className="text-2xl mb-4 cursor-blink">> cat /proc/sys/stats</h3>
+                    <h3 className="text-2xl mb-4 cursor-blink">&gt; cat /proc/sys/stats</h3>
                     <div className="text-base sm:text-lg pl-4 border-l-2 border-[var(--color-border)]/50 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-2">
                         {mockStats.map(stat => (
                            <div key={stat.label}>
@@ -61,7 +61,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ projects, onSelectProje
 
                 {/* All Projects Monitor */}
                 <div>
-                    <h3 className="text-2xl mb-4 cursor-blink">> ps -aux --view-projects</h3>
+                    <h3 className="text-2xl mb-4 cursor-blink">&gt; ps -aux --view-projects</h3>
                     <div className="text-base sm:text-lg pl-4 border-l-2 border-[var(--color-border)]/50">
                         {projects.map(p => (
                             <button key={p.id} onClick={() => handleProjectClick(p.id)} className="w-full text-left flex flex-wrap hover:bg-[var(--color-text)]/10 rounded px-2 py-0.5 transition-colors">
@@ -75,7 +75,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ projects, onSelectProje
 
                 {/* Recent Submissions */}
                 <div>
-                    <h3 className="text-2xl mb-4 cursor-blink">> tail -f /var/log/submissions.log</h3>
+                    <h3 className="text-2xl mb-4 cursor-blink">&gt; tail -f /var/log/submissions.log</h3>
                     <div className="text-base sm:text-lg whitespace-pre-wrap pl-4 border-l-2 border-[var(--color-border)]/50 font-mono">
                         {mockSubmissions.map((act, index) => (
                             <p key={index}>
