@@ -88,7 +88,7 @@ const App: React.FC = () => {
       case 'login':
         return <Login onLogin={handleLogin} onGoBack={() => navigateTo('home')} />;
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard projects={projects} />;
       case 'adminDashboard':
         return <AdminDashboard projects={projects} onSelectProject={handleSelectProject} />;
       case 'adminProjectDetail': {
