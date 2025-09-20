@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudioX Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Roboto Mono', monospace;
+      }
+      .cursor-blink::after {
+        content: "█";
+        animation: blink 0.8s infinite;
+        margin-left: 5px;
+        color: var(--color-text);
+      }
+      @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+      
+      @keyframes scanline {
+        0% { background-position: 0 0; }
+        100% { background-position: 0 100%; }
+      }
+
+      /* Animated Grid Background */
+      .grid-background {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0; /* Behind content */
+        perspective: 400px;
+      }
+
+      .grid-background::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background-image:
+              linear-gradient(var(--color-border) 1px, transparent 1px),
+              linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+          background-size: 60px 60px;
+          animation: grid-animation 4s linear infinite;
+          transform: rotateX(65deg);
+          opacity: 0.15;
+      }
+
+      @keyframes grid-animation {
+          from {
+              transform: rotateX(65deg) translateY(0px);
+          }
+          to {
+              transform: rotateX(65deg) translateY(-60px);
+          }
+      }
+
+      /* Glitch Effect */
+      .btn-glitch {
+        position: relative;
+      }
+      .btn-glitch:hover::before,
+      .btn-glitch:hover::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--color-bg);
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        color: var(--color-text);
+        padding: inherit;
+        border: 2px solid var(--color-border);
+        border-radius: 0.25rem; /* 4px */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-glitch:hover::before {
+        left: -2px;
+        text-shadow: 2px 0 var(--color-accent1);
+        animation: glitch-anim-1 1.5s infinite linear alternate-reverse;
+      }
+      .btn-glitch:hover::after {
+        left: 2px;
+        text-shadow: -2px 0 var(--color-accent2);
+        animation: glitch-anim-2 1.5s infinite linear alternate-reverse;
+      }
+
+      @keyframes glitch-anim-1 {
+        0% { clip: rect(42px, 9999px, 44px, 0); transform: skew(0.5deg); }
+        10% { clip: rect(12px, 9999px, 69px, 0); transform: skew(0.8deg); }
+        20% { clip: rect(33px, 9999px, 14px, 0); transform: skew(0.2deg); }
+        30% { clip: rect(80px, 9999px, 50px, 0); transform: skew(0.6deg); }
+        40% { clip: rect(42px, 9999px, 44px, 0); transform: skew(0.1deg); }
+        50% { clip: rect(95px, 9999px, 33px, 0); transform: skew(0.7deg); }
+        60% { clip: rect(10px, 9999px, 82px, 0); transform: skew(0.3deg); }
+        70% { clip: rect(66px, 9999px, 20px, 0); transform: skew(0.9deg); }
+        80% { clip: rect(42px, 9999px, 55px, 0); transform: skew(0.4deg); }
+        90% { clip: rect(29px, 9999px, 71px, 0); transform: skew(0.2deg); }
+        100% { clip: rect(5px, 9999px, 70px, 0); transform: skew(0.5deg); }
+      }
+      
+      @keyframes glitch-anim-2 {
+        0% { clip: rect(4px, 9999px, 100px, 0); transform: skew(-0.5deg); }
+        10% { clip: rect(80px, 9999px, 33px, 0); transform: skew(-0.2deg); }
+        20% { clip: rect(55px, 9999px, 20px, 0); transform: skew(-0.8deg); }
+        30% { clip: rect(13px, 9999px, 88px, 0); transform: skew(-0.4deg); }
+        40% { clip: rect(4px, 9999px, 100px, 0); transform: skew(-0.1deg); }
+        50% { clip: rect(78px, 9999px, 40px, 0); transform: skew(-0.6deg); }
+        60% { clip: rect(25px, 9999px, 92px, 0); transform: skew(-0.3deg); }
+        70% { clip: rect(70px, 9999px, 12px, 0); transform: skew(-0.7deg); }
+        80% { clip: rect(33px, 9999px, 60px, 0); transform: skew(-0.9deg); }
+        90% { clip: rect(19px, 9999px, 81px, 0); transform: skew(-0.2deg); }
+        100% { clip: rect(90px, 9999px, 15px, 0); transform: skew(-0.5deg); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-black">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
