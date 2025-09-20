@@ -37,7 +37,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
             <div className="space-y-12">
                 {/* Project Status Section */}
                 <div>
-                    <h3 className="text-2xl mb-4 cursor-blink">> ls --status /projects</h3>
+                    <h3 className="text-2xl mb-4 cursor-blink">&gt; ls --status /projects</h3>
                     <div className="text-base sm:text-lg pl-4 border-l-2 border-[var(--color-border)]/50">
                         {mockProjects.map(p => (
                             <div key={p.name} className="flex">
@@ -50,7 +50,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
                 {/* Recent Activity Section */}
                 <div>
-                    <h3 className="text-2xl mb-4 cursor-blink">> tail -f /var/log/activity.log</h3>
+                    <h3 className="text-2xl mb-4 cursor-blink">&gt; tail -f /var/log/activity.log</h3>
                     <div className="text-base sm:text-lg whitespace-pre-wrap pl-4 border-l-2 border-[var(--color-border)]/50 font-mono">
                         {mockActivity.map((act, index) => (
                             <p key={index}>
