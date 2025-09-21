@@ -48,7 +48,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
             <h2 className="text-3xl sm:text-4xl mb-8">
                 <Typewriter text="> System Access Authentication" />
             </h2>
-            <p className="text-lg text-[var(--color-muted)] mb-8">Awaiting credentials...</p>
+            <p className="text-lg text-[var(--color-muted)] mb-8">Login works only if TeamXD has given you credentials <br />Awaiting credentials...</p>
 
             <form onSubmit={handleLogin} className="space-y-6">
                 <div className="flex items-center">
