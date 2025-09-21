@@ -31,7 +31,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
             setError('[AUTH_ERROR] Invalid login credentials');
         } else if (data.user && data.session) {
             // Check if the logged-in user is the designated admin
-            const isAdminLogin = data.user.email?.toLowerCase() === 'admin@studiox.com';
+            const isAdminLogin = data.user.email?.toLowerCase() === 'admin@teamxd.com';
             onLogin(isAdminLogin);
         } else {
              setError('[AUTH_ERROR] Invalid login credentials');
