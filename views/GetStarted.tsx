@@ -52,17 +52,26 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
     setStatus('submitting');
     setError(null);
 
-    const { error: insertError } = await supabase
+    // Promise for a minimum 2.5-second delay to ensure animation completes
+    const minDelay = new Promise(resolve => setTimeout(resolve, 2500));
+
+    // Promise for the database operation
+    const dbOperation = supabase
       .from('projects')
       .insert([
         { 
-          name: formData.service, 
+          Name: formData.service, 
           client: formData.name,
           email: formData.email,
           clientBrief: formData.details,
-          status: 'ON_HOLD', // Default status for new briefs
+          status: 'ON_HOLD',
         }
       ]);
+      
+    // Wait for both the minimum delay and the database operation to complete
+    const [, dbResult] = await Promise.all([minDelay, dbOperation]);
+
+    const { error: insertError } = dbResult;
 
     if (insertError) {
       console.error('Error submitting brief:', insertError);
@@ -140,7 +149,7 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
   if (status === 'submitting') {
     return (
         <div>
-            <p className="text-xl"><Typewriter text="[INFO] Encrypting and transmitting data to TeamXD servers..." /></p>
+            <p className="text-xl"><Typewriter text="[INFO] Encrypting and transmitting data to StudioX servers..." /></p>
             <div className="w-full bg-gray-700 rounded-full h-2.5 mt-4">
               <div className="bg-[var(--color-text)] h-2.5 rounded-full animate-pulse" style={{width: '75%'}}></div>
             </div>
