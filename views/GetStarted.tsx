@@ -140,7 +140,7 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
   if (status === 'submitting') {
     return (
         <div>
-            <p className="text-xl"><Typewriter text="[INFO] Encrypting and transmitting data to StudioX servers..." /></p>
+            <p className="text-xl"><Typewriter text="[INFO] Encrypting and transmitting data to TeamXD servers..." /></p>
             <div className="w-full bg-gray-700 rounded-full h-2.5 mt-4">
               <div className="bg-[var(--color-text)] h-2.5 rounded-full animate-pulse" style={{width: '75%'}}></div>
             </div>
