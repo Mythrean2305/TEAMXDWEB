@@ -29,10 +29,10 @@ const Home: React.FC<HomeProps> = ({
 
   return (
     <div>
-      <h2 className="text-2xl sm:text-4xl mb-5 h-10 sm:h-12">
+      <h2 className="text-2xl sm:text-4xl mb-5 min-h-10 sm:min-h-12">
         <Typewriter text="Crafting Visual Stories That Resonate" onFinished={() => setSubtextStarted(true)} />
       </h2>
-      <p className="text-base sm:text-lg text-[var(--color-muted)] mb-6 h-20 sm:h-16">
+      <p className="text-base sm:text-lg text-[var(--color-muted)] mb-6 min-h-20 sm:min-h-16">
         <Typewriter text="We're a creative agency specializing in video editing, website design, and graphic design." start={subtextStarted} />
       </p>
 
