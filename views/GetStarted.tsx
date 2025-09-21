@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Typewriter from '../components/Typewriter';
 import { playClickSound } from '../utils/sounds';
+import { supabase } from '../supabaseClient';
 
 interface GetStartedProps {
   onGoBack: () => void;
@@ -19,6 +20,7 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
     email: '',
   });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [error, setError] = useState<string | null>(null);
 
   const handleNext = () => {
     playClickSound();
@@ -44,13 +46,31 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
     setFormData(prev => ({ ...prev, service }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     playClickSound();
     setStatus('submitting');
-    setTimeout(() => {
-        setStatus('success');
-    }, 2500);
+    setError(null);
+
+    const { error: insertError } = await supabase
+      .from('projects')
+      .insert([
+        { 
+          name: formData.service, 
+          client: formData.name,
+          email: formData.email,
+          clientBrief: formData.details,
+          status: 'ON_HOLD', // Default status for new briefs
+        }
+      ]);
+
+    if (insertError) {
+      console.error('Error submitting brief:', insertError);
+      setError('Failed to submit brief. Please try again later.');
+      setStatus('idle');
+    } else {
+      setStatus('success');
+    }
   };
 
   const renderStep = () => {
@@ -172,6 +192,7 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
             </button>
           )}
         </div>
+        {error && <p className="text-red-500 text-sm animate-pulse mt-4 text-center">[SUBMISSION_ERROR] {error}</p>}
       </form>
     </div>
   );
