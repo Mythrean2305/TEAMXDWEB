@@ -35,6 +35,9 @@ const Terminal: React.FC<TerminalProps> = ({
     '--color-secondary-btn-bg': theme.colors.secondaryBtnBg,
     '--color-secondary-btn-text': theme.colors.secondaryBtnText,
     '--color-secondary-btn-hover': theme.colors.secondaryBtnHover,
+    // Dynamically set the shadow color using the theme's border color with 40% opacity.
+    // '66' is the hex representation for 40% opacity.
+    boxShadow: `0 0 35px ${theme.colors.border}66`,
   } as React.CSSProperties;
 
   const handleSoundClick = (callback: () => void) => {
@@ -45,7 +48,7 @@ const Terminal: React.FC<TerminalProps> = ({
   return (
     <div 
       style={themeStyles}
-      className="relative max-w-7xl w-full min-h-[80vh] bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] shadow-[0_0_35px_rgba(0,255,127,0.4)] font-mono text-lg sm:text-xl flex flex-col"
+      className="relative max-w-7xl w-full min-h-[80vh] bg-[var(--color-bg)] rounded-lg overflow-hidden border border-[var(--color-border)] font-mono text-lg sm:text-xl flex flex-col"
     >
       {/* Animated Grid Background */}
       <div className="grid-background"></div>
