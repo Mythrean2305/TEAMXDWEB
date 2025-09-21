@@ -60,7 +60,7 @@ const GetStarted: React.FC<GetStartedProps> = ({ onGoBack }) => {
       .from('projects')
       .insert([
         { 
-          Name: formData.service, 
+          name: formData.service, 
           client: formData.name,
           email: formData.email,
           clientBrief: formData.details,
