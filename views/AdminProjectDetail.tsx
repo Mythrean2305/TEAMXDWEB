@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Project, ProjectStatus } from '../App';
+import { Project, ProjectStatus } from '../supabaseClient';
 import Typewriter from '../components/Typewriter';
 import { playClickSound } from '../utils/sounds';
 
@@ -22,8 +22,8 @@ const AdminProjectDetail: React.FC<AdminProjectDetailProps> = ({ project, onGoBa
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         playClickSound();
         const newStatus = e.target.value as ProjectStatus;
-        setCurrentStatus(newStatus);
-        onStatusChange(project.id, newStatus); // Update state in App.tsx
+        setCurrentStatus(newStatus); // Optimistic UI update
+        onStatusChange(project.id, newStatus); // Propagate change to App.tsx
     }
     
     const getStatusColor = (status: ProjectStatus) => {
@@ -82,7 +82,7 @@ const AdminProjectDetail: React.FC<AdminProjectDetailProps> = ({ project, onGoBa
                     <div className="text-base sm:text-lg whitespace-pre-wrap pl-4 border-l-2 border-[var(--color-border)]/50 font-mono">
                         <p className="text-[var(--color-muted)]">Permissions  Size      Name</p>
                         <p className="text-[var(--color-muted)]">-----------  --------  ----</p>
-                        {project.files.map((file, index) => (
+                        {project.files && project.files.map((file, index) => (
                             <p key={index}>
                                 <span className="text-zinc-500">-rw-r--r-- </span>
                                 <span className="inline-block w-16 text-right">{file.size}</span>

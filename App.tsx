@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Terminal from './components/Terminal';
 import Home from './views/Home';
 import GetStarted from './views/GetStarted';
@@ -8,51 +8,79 @@ import Login from './views/Login';
 import Dashboard from './views/Dashboard';
 import AdminDashboard from './views/AdminDashboard';
 import AdminProjectDetail from './views/AdminProjectDetail';
+import ClientProjectDetail from './views/ClientProjectDetail';
+import { supabase, Project, ProjectStatus } from './supabaseClient';
+import Typewriter from './components/Typewriter';
 
-type View = 'home' | 'getStarted' | 'portfolio' | 'team' | 'login' | 'dashboard' | 'adminDashboard' | 'adminProjectDetail';
-
-export type ProjectStatus = 'IN_PROGRESS' | 'AWAITING_FEEDBACK' | 'COMPLETED' | 'ON_HOLD';
-
-export interface Project {
-  id: string;
-  name: string;
-  client: string;
-  status: ProjectStatus;
-  clientBrief: string;
-  files: { name: string; size: string; type: 'mov' | 'pdf' | 'png' | 'zip' }[];
-}
-
-const mockProjects: Project[] = [
-    { id: 'p1', name: 'Project Phoenix', client: 'Stark Industries', status: 'IN_PROGRESS', clientBrief: 'Need a high-impact promo video for the new Arc Reactor line. Think fast cuts, dynamic visuals, and a modern feel. Target audience is tech investors and general public. Deadline is tight.', files: [{name: 'brief_v1.pdf', size: '1.2M', type: 'pdf'}, {name: 'raw_footage.zip', size: '2.5G', type: 'zip'}, {name: 'promo_draft_v1.mov', size: '150M', type: 'mov'}] },
-    { id: 'p2', name: 'Project Cascade', client: 'AquaCorp', status: 'AWAITING_FEEDBACK', clientBrief: 'The current web platform feels dated. We need a full redesign focusing on user engagement and data visualization for water consumption metrics. Must be mobile-first and highly interactive.', files: [{name: 'design_mockups_v2.pdf', size: '12.5M', type: 'pdf'}, {name: 'user_feedback.csv', size: '300K', type: 'pdf'}, {name: 'style_guide.pdf', size: '2.1M', type: 'pdf'}] },
-    { id: 'p3', name: 'Project Nova', client: 'Orion Cosmetics', status: 'COMPLETED', clientBrief: 'Launching a new line of organic cosmetics. Require a full brand identity package: logo, color palette, typography, and social media templates. The vibe should be minimalist, elegant, and natural.', files: [{name: 'final_logo_pack.zip', size: '5.8M', type: 'zip'}, {name: 'brand_guidelines.pdf', size: '3.4M', type: 'pdf'}] },
-    { id: 'p4', name: 'Skynet Initiative', client: 'Cyberdyne Systems', status: 'IN_PROGRESS', clientBrief: 'Develop a global AI-powered defense network. UI needs to be intuitive for military personnel. Focus on real-time threat analysis and response automation.', files: [{name: 'technical_spec.pdf', size: '15M', type: 'pdf'}] },
-    { id: 'p5', name: 'Gotham Knight Protocol', client: 'Wayne Enterprises', status: 'ON_HOLD', clientBrief: 'Project is currently on hold pending board approval. The goal is a new secure communication network for internal use. All assets need to be encrypted.', files: [{name: 'preliminary_brief.pdf', size: '800K', type: 'pdf'}] },
-];
-
+type View = 'home' | 'getStarted' | 'portfolio' | 'team' | 'login' | 'dashboard' | 'adminDashboard' | 'adminProjectDetail' | 'clientProjectDetail';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('home');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [projects, setProjects] = useState<Project[]>(mockProjects);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        setIsAuthenticated(true);
+        const userIsAdmin = session.user.email?.toLowerCase() === 'admin@teamxd.com';
+        setIsAdmin(userIsAdmin);
+
+        let query = supabase.from('projects').select('*');
+        if (!userIsAdmin) {
+          query = query.eq('email', session.user.email);
+        }
+        
+        const { data, error } = await query;
+
+        if (error) {
+          console.error('Error fetching projects:', error);
+          alert('Could not fetch project data.');
+        } else if (data) {
+          setProjects(data as Project[]);
+        }
+        
+        // If already on a public page, stay there. Otherwise, go to dashboard.
+        if (!['home', 'getStarted', 'portfolio', 'team'].includes(currentView)) {
+           navigateTo(userIsAdmin ? 'adminDashboard' : 'dashboard');
+        }
+
+      } else {
+        setIsAuthenticated(false);
+        setIsAdmin(false);
+        setProjects([]);
+        if (currentView !== 'home') {
+            navigateTo('home');
+        }
+      }
+      setLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const navigateTo = (view: View) => {
     setCurrentView(view);
   };
 
   const handleLogin = (isAdminLogin: boolean) => {
+    // onAuthStateChange will handle navigation and state updates
     setIsAuthenticated(true);
     setIsAdmin(isAdminLogin);
     navigateTo(isAdminLogin ? 'adminDashboard' : 'dashboard');
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setIsAdmin(false);
+  const handleLogout = async () => {
     setSelectedProjectId(null);
-    navigateTo('home');
+    await supabase.auth.signOut();
   };
   
   const handleSelectProject = (projectId: string) => {
@@ -60,18 +88,50 @@ const App: React.FC = () => {
     navigateTo('adminProjectDetail');
   }
 
+  const handleSelectClientProject = (projectId: string) => {
+    setSelectedProjectId(projectId);
+    navigateTo('clientProjectDetail');
+  }
+
   const handleBackToAdminDashboard = () => {
     setSelectedProjectId(null);
     navigateTo('adminDashboard');
   }
+  
+  const handleBackToDashboard = () => {
+    setSelectedProjectId(null);
+    navigateTo('dashboard');
+  }
 
-  const handleStatusChange = (projectId: string, newStatus: ProjectStatus) => {
+  const handleStatusChange = async (projectId: string, newStatus: ProjectStatus) => {
+    // Optimistic UI update
     setProjects(prevProjects => 
         prevProjects.map(p => p.id === projectId ? { ...p, status: newStatus } : p)
     );
+    // Persist to DB
+    const { error } = await supabase
+      .from('projects')
+      .update({ status: newStatus })
+      .eq('id', projectId);
+    
+    if (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to save status change. Reverting.");
+      // Revert on failure by re-fetching, or rollback local state (easier)
+      const originalProject = projects.find(p => p.id === projectId);
+      if (originalProject) {
+         setProjects(prevProjects => 
+            prevProjects.map(p => p.id === projectId ? originalProject : p)
+        );
+      }
+    }
   };
 
   const renderView = () => {
+    if (loading && currentView !== 'home') {
+        return <div className="text-center text-lg"><Typewriter text="Establishing secure connection..." /></div>;
+    }
+    
     switch(currentView) {
       case 'home':
         return <Home 
@@ -88,9 +148,19 @@ const App: React.FC = () => {
       case 'login':
         return <Login onLogin={handleLogin} onGoBack={() => navigateTo('home')} />;
       case 'dashboard':
-        return <Dashboard projects={projects} />;
+        return <Dashboard projects={projects} onSelectProject={handleSelectClientProject} />;
       case 'adminDashboard':
         return <AdminDashboard projects={projects} onSelectProject={handleSelectProject} />;
+      case 'clientProjectDetail': {
+        const selectedProject = projects.find(p => p.id === selectedProjectId);
+        if (selectedProject) {
+            return <ClientProjectDetail
+                project={selectedProject} 
+                onGoBack={handleBackToDashboard}
+            />;
+        }
+        return <Dashboard projects={projects} onSelectProject={handleSelectClientProject} />;
+      }
       case 'adminProjectDetail': {
         const selectedProject = projects.find(p => p.id === selectedProjectId);
         if (selectedProject) {
@@ -100,7 +170,6 @@ const App: React.FC = () => {
                 onStatusChange={handleStatusChange}
             />;
         }
-        // Fallback if no project is selected (shouldn't happen in normal flow)
         return <AdminDashboard projects={projects} onSelectProject={handleSelectProject} />;
       }
       default:
@@ -118,7 +187,7 @@ const App: React.FC = () => {
         isAuthenticated={isAuthenticated}
         isAdmin={isAdmin}
         onLogin={() => navigateTo('login')}
-        onDashboard={() => navigateTo('dashboard')}
+        onDashboard={() => navigateTo(isAdmin ? 'adminDashboard' : 'dashboard')}
         onAdminDashboard={() => navigateTo('adminDashboard')}
         onLogout={handleLogout}
       >
