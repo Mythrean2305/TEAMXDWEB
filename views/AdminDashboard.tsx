@@ -1,6 +1,6 @@
 import React from 'react';
 import Typewriter from '../components/Typewriter';
-import { Project, ProjectStatus } from '../supabaseClient';
+import { Project, ProjectStatus } from '../App';
 import { playClickSound } from '../utils/sounds';
 
 interface AdminDashboardProps {
@@ -67,7 +67,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ projects, onSelectProje
                             <button key={p.id} onClick={() => handleProjectClick(p.id)} className="w-full text-left flex flex-wrap hover:bg-[var(--color-text)]/10 rounded px-2 py-0.5 transition-colors">
                                 <span className="inline-block w-48 flex-shrink-0 text-cyan-400">[{p.client}]</span>
                                 <span className={`inline-block w-52 flex-shrink-0 ${getStatusColor(p.status)}`}>[{p.status}]</span>
-                                {/* Fix: Corrected property access to 'name' to match the Project interface. */}
                                 <span>{p.name}</span>
                             </button>
                         ))}
