@@ -1,12 +1,14 @@
 import React from 'react';
 import Typewriter from '../components/Typewriter';
-import { Project } from '../App'; // Import the Project type
+import { Project } from '../App';
+import { User } from '@supabase/supabase-js';
 
 interface DashboardProps {
     projects: Project[];
+    user?: User | null;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ projects }) => {
+const Dashboard: React.FC<DashboardProps> = ({ projects, user }) => {
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -17,12 +19,14 @@ const Dashboard: React.FC<DashboardProps> = ({ projects }) => {
             default: return 'text-[var(--color-muted)]';
         }
     };
+    
+    const welcomeMessage = user?.email ? `> Welcome back, ${user.email}.` : '> Welcome back, Client.';
 
     return (
         <div>
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl sm:text-4xl">
-                    <Typewriter text="> Welcome back, Client." />
+                    <Typewriter text={welcomeMessage} />
                 </h2>
             </div>
 
@@ -39,7 +43,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects }) => {
                                 </div>
                             ))
                         ) : (
-                            <p className="text-[var(--color-muted)]">No projects found.</p>
+                            <p className="text-[var(--color-muted)]">No active projects found.</p>
                         )}
                     </div>
                 </div>

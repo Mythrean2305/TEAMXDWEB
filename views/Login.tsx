@@ -4,11 +4,10 @@ import { playClickSound } from '../utils/sounds';
 import { supabase } from '../supabaseClient'; // Import the Supabase client
 
 interface LoginProps {
-    onLogin: (isAdmin: boolean) => void;
     onGoBack: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
+const Login: React.FC<LoginProps> = ({ onGoBack }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -20,22 +19,16 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
         setLoading(true);
         setError(null);
 
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password,
         });
 
-        setLoading(false);
-
         if (error) {
-            setError('[AUTH_ERROR] Invalid login credentials');
-        } else if (data.user && data.session) {
-            // Check if the logged-in user is the designated admin
-            const isAdminLogin = data.user.email?.toLowerCase() === 'admin@teamxd.com';
-            onLogin(isAdminLogin);
-        } else {
-             setError('[AUTH_ERROR] Invalid login credentials');
+            setError(error.message);
         }
+        // onAuthStateChange in App.tsx will handle the redirect
+        setLoading(false);
     };
 
     const handleGoBack = () => {
@@ -46,9 +39,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
     return (
         <div>
             <h2 className="text-3xl sm:text-4xl mb-8">
-                <Typewriter text="> System Access Authentication" />
+                <Typewriter text="&gt; System Access Authentication" />
             </h2>
-            <p className="text-lg text-[var(--color-muted)] mb-8">Login works only if TeamXD has given you credentials <br />Awaiting credentials...</p>
+            <p className="text-lg text-[var(--color-muted)] mb-8">Awaiting credentials...</p>
 
             <form onSubmit={handleLogin} className="space-y-6">
                 <div className="flex items-center">
@@ -74,7 +67,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoBack }) => {
                     />
                 </div>
 
-                {error && <p className="text-red-500 text-sm animate-pulse">{error}</p>}
+                {error && <p className="text-red-500 text-sm animate-pulse">[AUTH_ERROR] {error}</p>}
 
                 <div className="flex justify-between items-center pt-6">
                     <button type="button" onClick={handleGoBack} className="bg-[var(--color-secondary-btn-bg)] text-[var(--color-secondary-btn-text)] py-3 px-6 rounded transition duration-300 hover:bg-[var(--color-secondary-btn-hover)]">
