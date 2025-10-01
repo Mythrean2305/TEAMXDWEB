@@ -185,6 +185,7 @@ const App: React.FC = () => {
         onDashboard={() => navigateTo('dashboard')}
         onAdminDashboard={() => navigateTo('adminDashboard')}
         onLogout={handleLogout}
+        onHome={() => navigateTo('home')}
       >
         {renderView()}
       </Terminal>
