@@ -72,7 +72,7 @@ const App: React.FC = () => {
 
       if (error) {
         console.error('Error fetching projects:', error);
-        alert('Could not fetch project data. Make sure your Supabase connection and RLS policies are configured correctly.');
+        alert('Since no projects are found under your name . Mock projects will be shown');
       } else if (data) {
         setProjects(data as Project[]);
       }
