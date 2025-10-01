@@ -72,7 +72,7 @@ const App: React.FC = () => {
 
       if (error) {
         console.error('Error fetching projects:', error);
-        alert('Since no projects are found under your name . Mock projects will be shown');
+        alert('Could not fetch project data. Make sure your Supabase connection and RLS policies are configured correctly.');
       } else if (data) {
         setProjects(data as Project[]);
       }
@@ -95,7 +95,11 @@ const App: React.FC = () => {
 
 
   const navigateTo = (view: View) => {
-    setCurrentView(view);
+    if (view === 'getStarted' && session) {
+      setCurrentView('dashboard');
+    } else {
+      setCurrentView(view);
+    }
   };
 
   const handleLogout = async () => {
@@ -143,7 +147,11 @@ const App: React.FC = () => {
       case 'login':
         return <Login onGoBack={() => navigateTo('home')} />;
       case 'dashboard':
-        return <Dashboard projects={projects} user={session?.user} />;
+        return <Dashboard 
+          projects={projects} 
+          user={session?.user} 
+          onInitiateNewProject={() => setCurrentView('getStarted')}
+        />;
       case 'adminDashboard':
         return <AdminDashboard projects={projects} onSelectProject={handleSelectProject} />;
       case 'adminProjectDetail': {

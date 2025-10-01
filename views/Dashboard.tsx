@@ -2,13 +2,15 @@ import React from 'react';
 import Typewriter from '../components/Typewriter';
 import { Project } from '../App';
 import { User } from '@supabase/supabase-js';
+import { playClickSound } from '../utils/sounds';
 
 interface DashboardProps {
     projects: Project[];
     user?: User | null;
+    onInitiateNewProject: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ projects, user }) => {
+const Dashboard: React.FC<DashboardProps> = ({ projects, user, onInitiateNewProject }) => {
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -22,12 +24,23 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, user }) => {
     
     const welcomeMessage = user?.email ? `> Welcome back, ${user.email}.` : '> Welcome back, Client.';
 
+    const handleNewProjectClick = () => {
+        playClickSound();
+        onInitiateNewProject();
+    }
+
     return (
         <div>
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
                 <h2 className="text-3xl sm:text-4xl">
                     <Typewriter text={welcomeMessage} />
                 </h2>
+                <button
+                    onClick={handleNewProjectClick}
+                    className="bg-transparent border-2 border-[var(--color-text)] text-[var(--color-text)] py-2 px-4 cursor-pointer text-sm transition duration-300 rounded hover:bg-[var(--color-text)] hover:text-[var(--color-bg)]"
+                >
+                    + Submit New Brief
+                </button>
             </div>
 
             <div className="space-y-12">
@@ -43,7 +56,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projects, user }) => {
                                 </div>
                             ))
                         ) : (
-                            <p className="text-[var(--color-muted)]">No active projects found.</p>
+                            <p className="text-[var(--color-muted)]">No active projects found. Use the button above to submit a new brief.</p>
                         )}
                     </div>
                 </div>
