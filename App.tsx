@@ -39,13 +39,11 @@ const App: React.FC = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      setLoading(false);
     });
 
     // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session);
-        setLoading(false);
     });
 
     return () => {
@@ -55,14 +53,22 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const fetchProjects = async () => {
+      // Don't fetch if there's no active session.
       if (!session) {
         setProjects([]);
+        setLoading(false);
         return;
       }
       setLoading(true);
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*');
+
+      let query = supabase.from('projects').select('*');
+
+      // If the user is not an admin, filter projects by their user ID to respect RLS policies.
+      if (!isAdmin) {
+        query = query.eq('user_id', session.user.id);
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         console.error('Error fetching projects:', error);
@@ -74,7 +80,7 @@ const App: React.FC = () => {
     };
 
     fetchProjects();
-  }, [session]);
+  }, [session, isAdmin]);
   
   useEffect(() => {
     // Redirect logic
