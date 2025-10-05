@@ -88,8 +88,8 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
 // To change the website, paste the full URL (e.g., "https://example.com") into the `websiteUrl` field.
 const projects: Project[] = [
   { id: 'phoenix', file: 'valorantedit.mov', size: '', date: 'May 7', title: 'Project Valo', client: 'Reconnecting Gaming', type: 'Gaming Video', description: 'A high-energy editing video with flowy edits of the gameplay valorant under 10 seconds.', youtubeId: 'ZEpBnEPP8Jg' /* <-- PASTE YOUR YOUTUBE ID HERE */ },
-  { id: 'cascade', file: 'project_cascade.web', size: '1.2M', date: 'Apr 28', title: 'Cascade Web Platform', client: 'AquaCorp', type: 'Website Design', description: 'A fully responsive and interactive web platform for a water conservation initiative. The design focuses on data visualization and user engagement.', websiteUrl: 'https://welcome.hackclubvit.xyz' /* <-- PASTE YOUR WEBSITE URL HERE */ },
-  { id: 'nova', file: 'brand_identity_nova.pdf', size: '850K', date: 'Mar 19', title: 'Nova Brand Identity', client: 'Orion Cosmetics', type: 'Graphic Design', description: 'A complete branding package including logo design, color palette, typography, and marketing asset templates for a new line of organic cosmetics.' , websiteUrl: 'https://vaishnavikrishnamurthy.netlify.app/'},
+  { id: 'cascade', file: 'teamhackclub.web', size: '1.2M', date: 'Apr 28', title: 'Cascade Web Platform', client: 'AquaCorp', type: 'Website Design', description: 'A fully responsive and interactive web platform for a water conservation initiative. The design focuses on data visualization and user engagement.', websiteUrl: 'https://welcome.hackclubvit.xyz' /* <-- PASTE YOUR WEBSITE URL HERE */ },
+  { id: 'nova', file: 'business.web', size: '850K', date: 'Mar 19', title: 'Nova Brand Identity', client: 'Orion Cosmetics', type: 'Graphic Design', description: 'A complete branding package including logo design, color palette, typography, and marketing asset templates for a new line of organic cosmetics.' , websiteUrl: 'https://vaishnavikrishnamurthy.netlify.app/'},
 ];
 
 interface PortfolioProps {
