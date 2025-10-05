@@ -12,6 +12,7 @@ interface Project {
   type: string;
   description: string;
   youtubeId?: string;
+  websiteUrl?: string;
 }
 
 interface ProjectDetailModalProps {
@@ -29,7 +30,7 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
                 to { opacity: 1; transform: scale(1); }
               }
               .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-              .video-container {
+              .media-container {
                 position: relative;
                 padding-bottom: 56.25%; /* 16:9 */
                 height: 0;
@@ -37,7 +38,7 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
                 max-width: 100%;
                 background: #000;
               }
-              .video-container iframe {
+              .media-container iframe {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -48,12 +49,23 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
             <h3 className="text-xl sm:text-2xl text-[var(--color-text)] mb-4">{project.title}</h3>
             
             {project.youtubeId && (
-              <div className="video-container mb-4 rounded-lg overflow-hidden border border-[var(--color-border)]/50">
+              <div className="media-container mb-4 rounded-lg overflow-hidden border border-[var(--color-border)]/50">
                 <iframe
                   src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&rel=0`}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
+            
+            {project.websiteUrl && (
+              <div className="media-container mb-4 rounded-lg overflow-hidden border border-[var(--color-border)]/50">
+                <iframe
+                  src={project.websiteUrl}
+                  title={project.title}
+                  frameBorder="0"
                   allowFullScreen
                 ></iframe>
               </div>
@@ -73,11 +85,11 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
 // HOW TO EDIT:
 // To change the wording, just edit the text in `title`, `client`, `type`, and `description` below.
 // To change the video, find the YouTube video ID and paste it into the `youtubeId` field.
-// The ID is the part of the URL after "v=". For example, in "https://www.youtube.com/watch?v=dQw4w9WgXcQ", the ID is "dQw4w9WgXcQ".
+// To change the website, paste the full URL (e.g., "https://example.com") into the `websiteUrl` field.
 const projects: Project[] = [
-  { id: 'phoenix', file: 'project_phoenix.mov', size: '4.5M', date: 'May 12', title: 'Project Phoenix', client: 'Stark Industries', type: 'Promotional Video', description: 'A high-energy promotional video showcasing the launch of a new tech product line, featuring dynamic motion graphics and a powerful cinematic score.', youtubeId: 'ZEpBnEPP8Jg' /* <-- PASTE YOUR YOUTUBE ID HERE */ },
-  { id: 'cascade', file: 'project_cascade.web', size: '1.2M', date: 'Apr 28', title: 'Cascade Web Platform', client: 'AquaCorp', type: 'Website Design', description: 'A fully responsive and interactive web platform for a water conservation initiative. The design focuses on data visualization and user engagement.' },
-  { id: 'nova', file: 'brand_identity_nova.pdf', size: '850K', date: 'Mar 19', title: 'Nova Brand Identity', client: 'Orion Cosmetics', type: 'Graphic Design', description: 'A complete branding package including logo design, color palette, typography, and marketing asset templates for a new line of organic cosmetics.' },
+  { id: 'phoenix', file: 'valorantedit.mov', size: '', date: 'May 7', title: 'Project Valo', client: 'Reconnecting Gaming', type: 'Gaming Video', description: 'A high-energy editing video with flowy edits of the gameplay valorant under 10 seconds.', youtubeId: 'ZEpBnEPP8Jg' /* <-- PASTE YOUR YOUTUBE ID HERE */ },
+  // { id: 'cascade', file: 'project_cascade.web', size: '1.2M', date: 'Apr 28', title: 'Cascade Web Platform', client: 'AquaCorp', type: 'Website Design', description: 'A fully responsive and interactive web platform for a water conservation initiative. The design focuses on data visualization and user engagement.', websiteUrl: 'https://example.com' /* <-- PASTE YOUR WEBSITE URL HERE */ },
+  // { id: 'nova', file: 'brand_identity_nova.pdf', size: '850K', date: 'Mar 19', title: 'Nova Brand Identity', client: 'Orion Cosmetics', type: 'Graphic Design', description: 'A complete branding package including logo design, color palette, typography, and marketing asset templates for a new line of organic cosmetics.' },
 ];
 
 interface PortfolioProps {
