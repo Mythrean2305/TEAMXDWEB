@@ -70,8 +70,12 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
 );
 
 
+// HOW TO EDIT:
+// To change the wording, just edit the text in `title`, `client`, `type`, and `description` below.
+// To change the video, find the YouTube video ID and paste it into the `youtubeId` field.
+// The ID is the part of the URL after "v=". For example, in "https://www.youtube.com/watch?v=dQw4w9WgXcQ", the ID is "dQw4w9WgXcQ".
 const projects: Project[] = [
-  { id: 'phoenix', file: 'project_phoenix.mov', size: '4.5M', date: 'May 12', title: 'Project Phoenix', client: 'Stark Industries', type: 'Promotional Video', description: 'A high-energy promotional video showcasing the launch of a new tech product line, featuring dynamic motion graphics and a powerful cinematic score.', youtubeId: 'BBbgpDCGD_o' },
+  { id: 'phoenix', file: 'project_phoenix.mov', size: '4.5M', date: 'May 12', title: 'Project Phoenix', client: 'Stark Industries', type: 'Promotional Video', description: 'A high-energy promotional video showcasing the launch of a new tech product line, featuring dynamic motion graphics and a powerful cinematic score.', youtubeId: 'BBbgpDCGD_o' /* <-- PASTE YOUR YOUTUBE ID HERE */ },
   { id: 'cascade', file: 'project_cascade.web', size: '1.2M', date: 'Apr 28', title: 'Cascade Web Platform', client: 'AquaCorp', type: 'Website Design', description: 'A fully responsive and interactive web platform for a water conservation initiative. The design focuses on data visualization and user engagement.' },
   { id: 'nova', file: 'brand_identity_nova.pdf', size: '850K', date: 'Mar 19', title: 'Nova Brand Identity', client: 'Orion Cosmetics', type: 'Graphic Design', description: 'A complete branding package including logo design, color palette, typography, and marketing asset templates for a new line of organic cosmetics.' },
 ];
@@ -103,24 +107,26 @@ const Portfolio: React.FC<PortfolioProps> = ({ onGoBack }) => {
             <h2 className="text-3xl sm:text-4xl mb-8">
                 <Typewriter text="&gt; ls /portfolio" />
             </h2>
-            <div className="text-base sm:text-lg whitespace-pre-wrap">
-                <p className="text-[var(--color-muted)]">Permissions  Size   Date      Name</p>
-                <p className="text-[var(--color-muted)]">-----------  -----  --------  ----</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {projects.map(p => (
-                    <p key={p.id}>
-                        <span className="text-zinc-500">-rw-r--r-- </span>
-                        <span className="inline-block w-12 text-right">{p.size}</span>
-                        <span className="inline-block w-16 text-right">{p.date}</span>
-                        {'  '}
-                        <button onClick={() => handleOpenProject(p)} className="text-[var(--color-text)] hover:underline focus:outline-none focus:bg-[var(--color-text)]/20 rounded px-1">
-                            {p.file}
-                        </button>
-                    </p>
+                    <div 
+                        key={p.id} 
+                        onClick={() => handleOpenProject(p)}
+                        className="bg-[var(--color-secondary-bg)] border border-[var(--color-border)]/50 rounded-lg p-5 text-left cursor-pointer transition-all duration-300 hover:border-[var(--color-border)] hover:shadow-[0_0_15px_var(--color-border)] hover:-translate-y-1"
+                    >
+                        <h4 className="text-xl text-[var(--color-text)] mb-2 truncate">{p.file}</h4>
+                        <p className="text-sm text-[var(--color-muted)]">client: {p.client}</p>
+                        <p className="text-sm text-[var(--color-muted)] mb-3">type: {p.type}</p>
+                        <p className="text-right text-xs text-zinc-500 mt-4">{p.size} - {p.date}</p>
+                    </div>
                 ))}
             </div>
-            <button onClick={handleGoBack} className="mt-8 bg-[var(--color-secondary-btn-bg)] text-[var(--color-secondary-btn-text)] py-3 px-6 rounded transition duration-300 hover:bg-[var(--color-secondary-btn-hover)]">
+
+            <button onClick={handleGoBack} className="mt-12 bg-[var(--color-secondary-btn-bg)] text-[var(--color-secondary-btn-text)] py-3 px-6 rounded transition duration-300 hover:bg-[var(--color-secondary-btn-hover)]">
                 Go Back
             </button>
+            
             {selectedProject && <ProjectDetailModal project={selectedProject} onClose={handleCloseModal} />}
         </div>
     );
