@@ -75,7 +75,7 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project, onClos
 // To change the video, find the YouTube video ID and paste it into the `youtubeId` field.
 // The ID is the part of the URL after "v=". For example, in "https://www.youtube.com/watch?v=dQw4w9WgXcQ", the ID is "dQw4w9WgXcQ".
 const projects: Project[] = [
-  { id: 'phoenix', file: 'project_phoenix.mov', size: '4.5M', date: 'May 12', title: 'Project Phoenix', client: 'Stark Industries', type: 'Promotional Video', description: 'A high-energy promotional video showcasing the launch of a new tech product line, featuring dynamic motion graphics and a powerful cinematic score.', youtubeId: 'BBbgpDCGD_o' /* <-- PASTE YOUR YOUTUBE ID HERE */ },
+  { id: 'phoenix', file: 'project_phoenix.mov', size: '4.5M', date: 'May 12', title: 'Project Phoenix', client: 'Stark Industries', type: 'Promotional Video', description: 'A high-energy promotional video showcasing the launch of a new tech product line, featuring dynamic motion graphics and a powerful cinematic score.', youtubeId: 'ZEpBnEPP8Jg' /* <-- PASTE YOUR YOUTUBE ID HERE */ },
   { id: 'cascade', file: 'project_cascade.web', size: '1.2M', date: 'Apr 28', title: 'Cascade Web Platform', client: 'AquaCorp', type: 'Website Design', description: 'A fully responsive and interactive web platform for a water conservation initiative. The design focuses on data visualization and user engagement.' },
   { id: 'nova', file: 'brand_identity_nova.pdf', size: '850K', date: 'Mar 19', title: 'Nova Brand Identity', client: 'Orion Cosmetics', type: 'Graphic Design', description: 'A complete branding package including logo design, color palette, typography, and marketing asset templates for a new line of organic cosmetics.' },
 ];
